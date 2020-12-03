@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: awsome-app-flux
+  labels:
+    app: app
+  annotations:
+    fluxcd.io/automated: "true"  
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: awsome-app-flux
+  template:
+    metadata:
+      labels:
+        app: awsome-app-flux
+    spec:
+      containers:
+      - name: awsome-app-flux
+        image: 1234567896.dkr.ecr.us-east-1.amazonaws.com/awsome-flux-example:latest
