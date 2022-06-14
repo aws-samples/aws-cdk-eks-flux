@@ -1,9 +1,7 @@
-from aws_cdk import (    
-    aws_eks as eks,
-    core as cdk
-)
+from aws_cdk import aws_eks as eks
+from constructs import Construct
 
-class ClusterConstruct(cdk.Construct):
+class ClusterConstruct(Construct):
     def __init__(self,scope,id,cluster_name):
         super().__init__(scope,id)                
         self._cluster_name = cluster_name
@@ -13,5 +11,5 @@ class ClusterConstruct(cdk.Construct):
         self.cluster = eks.Cluster(
             scope=self,
             id=self._cluster_name,
-            version=eks.KubernetesVersion.V1_18
+            version=eks.KubernetesVersion.V1_20
         )
