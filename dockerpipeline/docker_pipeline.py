@@ -5,15 +5,17 @@ from aws_cdk import (
     aws_codepipeline_actions as codepipeline_actions,
     aws_ecr as ecr,
     aws_iam as iam,
-    core
-)    
+    Stack,
+    CfnOutput
+)
+from constructs import Construct    
 
 
-class DockerPipelineConstruct(core.Construct):
+class DockerPipelineConstruct(Construct):
 
     def __init__(
         self, 
-        scope: core.Construct, 
+        scope: Construct, 
         id: str,
     ) -> None:
         super().__init__(scope=scope, id=id)
@@ -41,7 +43,7 @@ class DockerPipelineConstruct(core.Construct):
 
 
         # Outputs
-        core.CfnOutput(
+        CfnOutput(
             scope=self,
             id="application_repository",
             value=codecommit_repo.repository_clone_url_http
@@ -68,7 +70,7 @@ class DockerPipelineConstruct(core.Construct):
         docker_build.add_to_role_policy(iam.PolicyStatement(
             effect=iam.Effect.ALLOW,
             actions=["ecr:BatchCheckLayerAvailability", "ecr:GetDownloadUrlForLayer", "ecr:BatchGetImage"],
-            resources=[f"arn:{core.Stack.of(self).partition}:ecr:{core.Stack.of(self).region}:{core.Stack.of(self).account}:repository/*"],))
+            resources=[f"arn:{Stack.of(self).partition}:ecr:{Stack.of(self).region}:{Stack.of(self).account}:repository/*"],))
 
         source_action = codepipeline_actions.CodeCommitSourceAction(
             action_name="CodeCommit_Source",

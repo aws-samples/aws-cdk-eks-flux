@@ -5,14 +5,15 @@ from aws_cdk import (
     aws_sns_subscriptions as subs,
     aws_codecommit as codecommit,
     aws_eks as eks,
-    core
+    CfnOutput
 )
+from constructs import Construct
 from . import fluxcd_cluster
-class FluxcdConstruct(core.Construct):
+class FluxcdConstruct(Construct):
 
     def __init__(
         self, 
-        scope: core.Construct, 
+        scope: Construct, 
         id: str, 
         eks_base_cluster: eks.Cluster,
         git_user,
@@ -32,7 +33,7 @@ class FluxcdConstruct(core.Construct):
             description=f"Kubernetes Infra Code"
         )
         self.k8s_infra_git_host = "git-codecommit." + region + ".amazonaws.com/v1/repos/" + codecommit_repo_kubernetes.repository_name
-        core.CfnOutput(
+        CfnOutput(
             scope=self,
             id="k8s_infrastructure_repository",
             value=codecommit_repo_kubernetes.repository_clone_url_http
